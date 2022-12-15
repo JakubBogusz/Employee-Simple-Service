@@ -8,6 +8,6 @@ export interface Employee {
     postalCode: string;
     town: string;
     phoneNumber: string;
-    dateOfBirth: Date;
+    dateOfBirth: string;
     age: number;
 }
