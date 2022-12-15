@@ -7,11 +7,11 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class EmployeeController : Controller
+public class EmployeesController : Controller
 {
     private readonly ApplicationDbContext _applicationDbContext;
 
-    public EmployeeController(ApplicationDbContext applicationDbContext)
+    public EmployeesController(ApplicationDbContext applicationDbContext)
     {
         _applicationDbContext = applicationDbContext;
     }
