@@ -42,12 +42,19 @@ public class EmployeesController : Controller
             return NotFound();
         }
         
-        return Ok(_mapper.Map<IReadOnlyList<EmployeeDto>>(employee));
+        return Ok(_mapper.Map<EmployeeDto>(employee));
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddEmployee([FromBody] Employee employee)
+    public async Task<IActionResult> AddEmployee([FromBody] EmployeeDto employeeDto)
     {
+        var employee = _mapper.Map<Employee>(employeeDto);
+
+        if (employee == null)
+        {
+            NotFound();
+        }
+        
         _unitOfWork.Repository<Employee>().Add(employee);
         await _unitOfWork.Complete();
         
@@ -56,7 +63,7 @@ public class EmployeesController : Controller
     
     [HttpPut]
     [Route("{id:int}")]
-    public async Task<IActionResult> UpdateEmployee([FromRoute] int id, Employee updateEmployee)
+    public async Task<IActionResult> UpdateEmployee([FromRoute] int id, EmployeeDto updateEmployeeDto)
     {
         var employee = await _unitOfWork.Repository<Employee>().GetByIdAsync(id);
         
@@ -65,16 +72,7 @@ public class EmployeesController : Controller
             return NotFound();
         }
         
-        employee.FirstName = updateEmployee.FirstName;
-        employee.LastName = updateEmployee.LastName;
-        employee.Town = updateEmployee.Town;
-        employee.StreetName = updateEmployee.StreetName;
-        employee.ApartmentNumber = updateEmployee.ApartmentNumber;
-        employee.HouseNumber = updateEmployee.HouseNumber;
-        employee.DateOfBirth = updateEmployee.DateOfBirth;
-        employee.PostalCode = updateEmployee.PostalCode;
-        employee.PhoneNumber = updateEmployee.PhoneNumber;
-        employee.Age = updateEmployee.Age;
+        _mapper.Map(updateEmployeeDto, employee);
 
         _unitOfWork.Repository<Employee>().Update(employee);
         await _unitOfWork.Complete();

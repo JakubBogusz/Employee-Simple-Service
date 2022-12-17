@@ -11,7 +11,7 @@ import { EmployeesService } from 'src/app/services/employees.service';
 export class EditEmployeeComponent implements OnInit {
 
   employeeDetails: Employee = {
-    id: '',
+    id: 0,
     firstName: '',
     lastName: '',
     streetName: '',
@@ -33,8 +33,8 @@ export class EditEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe({
       next: (params) => {
-        const id = params.get('id');
-
+       
+        const id = Number(params.get('id'));
         if(id) {
           this.employeeService.getEmployee(id)
           .subscribe({
@@ -56,7 +56,7 @@ export class EditEmployeeComponent implements OnInit {
     });
   }
 
-  deleteEmployee(id: string) {
+  deleteEmployee(id: number) {
     this.employeeService.deleteEmployee(id)
     .subscribe({
       next: (response) => {
