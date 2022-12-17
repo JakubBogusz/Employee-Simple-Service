@@ -1,7 +1,9 @@
-namespace API.Models;
+namespace API.Dtos;
 
-public class Employee : BaseEntity
+public class EmployeeDto
 {
+    public int Id { get; set; }
+    
     public string FirstName { get; set; }
     
     public string LastName { get; set; }

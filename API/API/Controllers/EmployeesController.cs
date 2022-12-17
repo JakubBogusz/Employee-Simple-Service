@@ -1,7 +1,8 @@
-using API.Data;
+using API.Data.Interfaces;
+using API.Dtos;
 using API.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
@@ -9,56 +10,61 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class EmployeesController : Controller
 {
-    private readonly ApplicationDbContext _applicationDbContext;
+    private readonly IGenericRepository<Employee> _employeeRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public EmployeesController(ApplicationDbContext applicationDbContext)
+    public EmployeesController(IGenericRepository<Employee> employeeRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
-        _applicationDbContext = applicationDbContext;
+        _employeeRepository = employeeRepository;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
     
     [HttpGet]
     public async Task<IActionResult> GetAllEmployees()
     {
-        var employees = await _applicationDbContext.Employees.ToListAsync();
+        var employees = await _employeeRepository.GetAllAsync();
 
-        return Ok(employees);
+        return Ok(_mapper.Map<IReadOnlyList<EmployeeDto>>(employees));
     }
     
     [HttpGet]
-    [Route("{employeeId:Guid}")]
-    public async Task<IActionResult> GetEmployeeById(Guid employeeId)
+    [Route("{employeeId:int}")]
+    public async Task<IActionResult> GetEmployeeById(int employeeId)
     {
-        var employee = await _applicationDbContext.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
+        var employee = await _employeeRepository.GetByIdAsync(employeeId);
 
         if (employee == null)
         {
             return NotFound();
         }
-    
-        return Ok(employee);
+        
+        return Ok(_mapper.Map<IReadOnlyList<EmployeeDto>>(employee));
     }
 
     [HttpPost]
     public async Task<IActionResult> AddEmployee([FromBody] Employee employee)
     {
-        employee.Id = Guid.NewGuid();
-        await _applicationDbContext.Employees.AddAsync(employee);
-        await _applicationDbContext.SaveChangesAsync();
-
+        _unitOfWork.Repository<Employee>().Add(employee);
+        await _unitOfWork.Complete();
+        
         return Ok(employee);
     }
     
     [HttpPut]
-    [Route("{id:Guid}")]
-    public async Task<IActionResult> UpdateEmployee([FromRoute] Guid id, Employee updateEmployee)
+    [Route("{id:int}")]
+    public async Task<IActionResult> UpdateEmployee([FromRoute] int id, Employee updateEmployee)
     {
-        var employee = await _applicationDbContext.Employees.FindAsync(id);
+        var employee = await _unitOfWork.Repository<Employee>().GetByIdAsync(id);
         
         if (employee == null)
         {
             return NotFound();
         }
-
+        
         employee.FirstName = updateEmployee.FirstName;
         employee.LastName = updateEmployee.LastName;
         employee.Town = updateEmployee.Town;
@@ -70,24 +76,25 @@ public class EmployeesController : Controller
         employee.PhoneNumber = updateEmployee.PhoneNumber;
         employee.Age = updateEmployee.Age;
 
-        await _applicationDbContext.SaveChangesAsync();
+        _unitOfWork.Repository<Employee>().Update(employee);
+        await _unitOfWork.Complete();
 
         return Ok(employee);
     }
     
     [HttpDelete]
-    [Route("{id:Guid}")]
-    public async Task<IActionResult> DeleteEmployee([FromRoute] Guid id)
+    [Route("{id:int}")]
+    public async Task<IActionResult> DeleteEmployee([FromRoute] int id)
     {
-        var employee = await _applicationDbContext.Employees.FindAsync(id);
+        var employee = await _employeeRepository.GetByIdAsync(id);
 
         if (employee == null)
         {
             return NotFound();
         }
         
-        _applicationDbContext.Employees.Remove(employee);
-        await _applicationDbContext.SaveChangesAsync();
+        _unitOfWork.Repository<Employee>().Delete(employee);
+        await _unitOfWork.Complete();
 
         return Ok(employee);
     }
