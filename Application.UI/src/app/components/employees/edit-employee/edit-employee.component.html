@@ -1,1 +1,58 @@
-<p>edit-employee works!</p>
+<div class="container my-5">
+    <h1 class="mb-3">Edit Employee</h1>
+
+    <div class="row">
+        <div class="col-6">
+            <form #form="ngForm" (ngSubmit)="updateEmployee()"> 
+                <div class="mb-3">
+                    <label for="id" class="form-label">Id</label>
+                    <input type="text" class="form-control" id="id" name="id" [(ngModel)]="employeeDetails.id">
+                  </div>
+                <div class="mb-3">
+                  <label for="firstName" class="form-label">First Name</label>
+                  <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="employeeDetails.firstName">
+                </div>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="employeeDetails.lastName">
+                </div>
+                <div class="mb-3">
+                    <label for="streetName" class="form-label">Street Name</label>
+                    <input type="text" class="form-control" id="streetName" name="streetName" [(ngModel)]="employeeDetails.streetName">
+                  </div>
+                <div class="mb-3">
+                      <label for="houseNumber" class="form-label">House Number</label>
+                      <input type="text" class="form-control" id="houseNumber" name="houseNumber" [(ngModel)]="employeeDetails.houseNumber">
+                </div>
+                <div class="mb-3">
+                    <label for="apartmentNumber" class="form-label">Apartment Number</label>
+                    <input type="number" class="form-control" id="apartmentNumber" name="apartmentNumber" [(ngModel)]="employeeDetails.apartmentNumber">
+                </div>
+                <div class="mb-3">
+                    <label for="postalCode" class="form-label">Postal Code</label>
+                    <input type="text" class="form-control" id="postalCode" name="postalCode" [(ngModel)]="employeeDetails.postalCode">
+                </div>
+                  <div class="mb-3">
+                      <label for="town" class="form-label">Town</label>
+                      <input type="text" class="form-control" id="town" name="town" [(ngModel)]="employeeDetails.town">
+                </div>
+                <div class="mb-3">
+                    <label for="phoneNumber" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="employeeDetails.phoneNumber">
+                </div>
+                  <div class="mb-3">
+                      <label for="dateOfBirth" class="form-label">Date Of Birth</label>
+                      <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" [(ngModel)]="employeeDetails.dateOfBirth">
+                </div>
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="age" name="age" [(ngModel)]="employeeDetails.age">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-danger m-lg-2" (click)="deleteEmployee(employeeDetails.id)">Delete</button>
+            </form>
+        </div>
+    </div>
+  
+</div>

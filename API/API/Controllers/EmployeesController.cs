@@ -24,10 +24,16 @@ public class EmployeesController : Controller
         return Ok(employees);
     }
     
-    [HttpGet("{employeeId}")]
+    [HttpGet]
+    [Route("{employeeId:Guid}")]
     public async Task<IActionResult> GetEmployeeById(Guid employeeId)
     {
         var employee = await _applicationDbContext.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
+
+        if (employee == null)
+        {
+            return NotFound();
+        }
     
         return Ok(employee);
     }
@@ -43,22 +49,46 @@ public class EmployeesController : Controller
     }
     
     [HttpPut]
-    public async Task<IActionResult> UpdateEmployee([FromBody] Employee employee)
+    [Route("{id:Guid}")]
+    public async Task<IActionResult> UpdateEmployee([FromRoute] Guid id, Employee updateEmployee)
     {
-        _applicationDbContext.Employees.Update(employee);
-        await _applicationDbContext.SaveChangesAsync();
-    
-        return Ok(employee);
-    }
-    
-    [HttpDelete]
-    public async Task<IActionResult> DeleteEmployee(Employee employee)
-    {
-        _applicationDbContext.Employees.Remove(employee);
+        var employee = await _applicationDbContext.Employees.FindAsync(id);
+        
+        if (employee == null)
+        {
+            return NotFound();
+        }
+
+        employee.FirstName = updateEmployee.FirstName;
+        employee.LastName = updateEmployee.LastName;
+        employee.Town = updateEmployee.Town;
+        employee.StreetName = updateEmployee.StreetName;
+        employee.ApartmentNumber = updateEmployee.ApartmentNumber;
+        employee.HouseNumber = updateEmployee.HouseNumber;
+        employee.DateOfBirth = updateEmployee.DateOfBirth;
+        employee.PostalCode = updateEmployee.PostalCode;
+        employee.PhoneNumber = updateEmployee.PhoneNumber;
+        employee.Age = updateEmployee.Age;
+
         await _applicationDbContext.SaveChangesAsync();
 
         return Ok(employee);
     }
     
-    
+    [HttpDelete]
+    [Route("{id:Guid}")]
+    public async Task<IActionResult> DeleteEmployee([FromRoute] Guid id)
+    {
+        var employee = await _applicationDbContext.Employees.FindAsync(id);
+
+        if (employee == null)
+        {
+            return NotFound();
+        }
+        
+        _applicationDbContext.Employees.Remove(employee);
+        await _applicationDbContext.SaveChangesAsync();
+
+        return Ok(employee);
+    }
 }

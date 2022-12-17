@@ -15,6 +15,7 @@
                 <th>PhoneNumber</th>
                 <th>DateOfBirth</th>
                 <th>Age</th>
+                <th> </th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +31,7 @@
                 <td>{{ employee.phoneNumber }}</td>
                 <td>{{ employee.dateOfBirth }}</td>
                 <td>{{ employee.age }}</td>
+                <td><a *ngIf="isEmployeesRoute()" [routerLink]="['edit', employee.id ]">Edit</a></td>
             </tr>
         </tbody>
     </table>
