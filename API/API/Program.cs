@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
         options.UseInMemoryDatabase(databaseName: "EmployeeSimpleDb"));
+
+//If you want to change Db Provider for SqlServer use:
 //options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeServiceConnectionString"))
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -21,6 +21,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 
 var app = builder.Build();
 
+// Uncomment using statement when you want to seed Employees table with example data
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

@@ -23,6 +23,7 @@ public class EmployeeDto
 
     public int? ApartmentNumber { get; set; }
     
+    [Required]
     public string PostalCode { get; set; }
 
     [Required]

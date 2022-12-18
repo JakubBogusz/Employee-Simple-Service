@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+// This project is still under development
+// In the future I'm going to add better exception handeling and logging mechanism
+
 [ApiController]
 [Route("api/[controller]")]
 public class EmployeesController : Controller
@@ -27,6 +30,11 @@ public class EmployeesController : Controller
     public async Task<IActionResult> GetAllEmployees()
     {
         var employees = await _employeeRepository.GetAllAsync();
+        
+        if (employees.Count < 1)
+        {
+            return NotFound();
+        }
 
         return Ok(_mapper.Map<IReadOnlyList<EmployeeDto>>(employees));
     }
@@ -49,10 +57,10 @@ public class EmployeesController : Controller
     public async Task<IActionResult> AddEmployee([FromBody] EmployeeDto employeeDto)
     {
         var employee = _mapper.Map<Employee>(employeeDto);
-
+        
         if (employee == null)
         {
-            NotFound();
+            return NotFound();
         }
         
         _unitOfWork.Repository<Employee>().Add(employee);
@@ -71,13 +79,13 @@ public class EmployeesController : Controller
         {
             return NotFound();
         }
-        
-        _mapper.Map(updateEmployeeDto, employee);
 
-        _unitOfWork.Repository<Employee>().Update(employee);
+        var updatedEmployee = _mapper.Map(updateEmployeeDto, employee);
+        
+        _unitOfWork.Repository<Employee>().Update(updatedEmployee);
         await _unitOfWork.Complete();
 
-        return Ok(employee);
+        return Ok(updatedEmployee);
     }
     
     [HttpDelete]
