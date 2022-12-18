@@ -6,11 +6,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2d4c8ba-9c3a-41c2-9cf9-177dc66a6470" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/API/Tests/EmployeeControllerTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.API/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/API/API.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Controllers/EmployeesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/API/Controllers/EmployeesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/API/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +93,7 @@
       <workItem from="1671222321836" duration="75000" />
       <workItem from="1671289291664" duration="6099000" />
       <workItem from="1671300605814" duration="18036000" />
-      <workItem from="1671361011307" duration="10759000" />
+      <workItem from="1671361011307" duration="11476000" />
     </task>
     <task id="LOCAL-00001" summary="Add database and initial migration with EF core">
       <created>1671063211121</created>

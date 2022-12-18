@@ -22,12 +22,12 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 var app = builder.Build();
 
 // Uncomment using statement when you want to seed Employees table with example data
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    DbInitialDataSeed.Initialize(services);
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//
+//     DbInitialDataSeed.Initialize(services);
+// }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
